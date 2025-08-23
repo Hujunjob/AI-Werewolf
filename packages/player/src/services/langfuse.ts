@@ -40,6 +40,8 @@ const activePhaseTrace = new Map<string, string>(); // gameId-phase -> current t
  * 获取 Langfuse 客户端实例
  */
 function getLangfuseClient(): Langfuse | null {
+  console.log("getLangfuseClient:",process.env.LANGFUSE_SECRET_KEY);
+  
   if (!langfuseClient && process.env.LANGFUSE_SECRET_KEY && process.env.LANGFUSE_PUBLIC_KEY) {
     langfuseClient = new Langfuse({
       secretKey: process.env.LANGFUSE_SECRET_KEY,

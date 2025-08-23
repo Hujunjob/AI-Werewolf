@@ -1,5 +1,8 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'path';
 
+// 确保从项目根目录加载 .env 文件
+dotenv.config({ path: path.resolve(process.cwd(), '../../.env') });
 // 初始化 Langfuse OpenTelemetry (必须在其他导入之前)
 import { initializeLangfuse, shutdownLangfuse, langfuse } from './services/langfuse';
 initializeLangfuse();
@@ -13,17 +16,22 @@ import {
   SpeechResponseSchema,
   LastWordsResponseSchema
 } from './validation';
-import type { 
-  StartGameParams, 
-  PlayerContext, 
-  WitchContext, 
-  SeerContext 
+import type {
+  StartGameParams,
+  PlayerContext,
+  WitchContext,
+  SeerContext
 } from '@ai-werewolf/types';
 
 // 解析命令行参数
 const args = process.argv.slice(2);
+console.log("player index:", args);
+
 const configArg = args.find(arg => arg.startsWith('--config='));
 const configPath = configArg ? configArg.split('=')[1] : undefined;
+const portArg = args.find(arg => arg.startsWith('--port='));
+console.log("configArg,portArg",configArg,portArg);
+
 
 // 加载配置
 const configLoader = new ConfigLoader(configPath);
@@ -50,8 +58,15 @@ app.use(cors());
 app.use(express.json());
 
 const playerServer = new PlayerServer(config);
-const port = config.server.port;
+// const port = config.server.port;
 const host = config.server.host;
+let port = 3001
+console.log("portArg",portArg);
+
+if (portArg) {
+  port = parseInt(portArg.split('=')[1]);
+  console.log("port:",port);  
+}
 
 // 辅助函数：在AI请求后刷新Langfuse数据
 async function flushLangfuseData() {
@@ -71,21 +86,21 @@ app.post('/api/player/start-game', async (req, res) => {
   try {
     console.log('\n=== START GAME REQUEST ===');
     console.log('Request body:', JSON.stringify(req.body, null, 2));
-    
+
     // 直接使用 StartGameParams 类型，不验证输入
     const params: StartGameParams = req.body;
     // 直接使用params，不需要解构
-    
+
     await playerServer.startGame(params);
-    
+
     const response = {
       message: 'Game started successfully',
       langfuseEnabled: true // 总是启用，使用gameId作为trace
     };
-    
+
     console.log('Response:', JSON.stringify(response, null, 2));
     console.log('=== END START GAME REQUEST ===\n');
-    
+
     res.json(response);
   } catch (error) {
     console.error('Start game error:', error);
@@ -97,19 +112,19 @@ app.post('/api/player/speak', async (req, res) => {
   try {
     console.log('\n=== SPEAK REQUEST ===');
     console.log('Request body:', JSON.stringify(req.body, null, 2));
-    
+
     // 直接使用 PlayerContext 类型，不验证输入
     const context: PlayerContext = req.body;
-    
+
     const speech = await playerServer.speak(context);
-    
+
     // 刷新Langfuse数据
     await flushLangfuseData();
-    
+
     const response = SpeechResponseSchema.parse({ speech });
     console.log('Response:', JSON.stringify(response, null, 2));
     console.log('=== END SPEAK REQUEST ===\n');
-    
+
     res.json(response);
   } catch (error) {
     console.error('Speak error:', error);
@@ -125,19 +140,19 @@ app.post('/api/player/vote', async (req, res) => {
   try {
     console.log('\n=== VOTE REQUEST ===');
     console.log('Request body:', JSON.stringify(req.body, null, 2));
-    
+
     // 直接使用 PlayerContext 类型，不验证输入
     const context: PlayerContext = req.body;
-    
+
     const voteResponse = await playerServer.vote(context);
-    
+
     // 刷新Langfuse数据
     await flushLangfuseData();
-    
+
     const response = VotingResponseSchema.parse(voteResponse);
     console.log('Response:', JSON.stringify(response, null, 2));
     console.log('=== END VOTE REQUEST ===\n');
-    
+
     res.json(response);
   } catch (error) {
     console.error('Vote error:', error);
@@ -153,19 +168,19 @@ app.post('/api/player/use-ability', async (req, res) => {
   try {
     console.log('\n=== USE ABILITY REQUEST ===');
     console.log('Request body:', JSON.stringify(req.body, null, 2));
-    
+
     // 直接使用类型，不验证输入 (可能是 PlayerContext, WitchContext, 或 SeerContext)
     const context: PlayerContext | WitchContext | SeerContext = req.body;
-    
+
     const result = await playerServer.useAbility(context);
-    
+
     // 刷新Langfuse数据
     await flushLangfuseData();
-    
+
     // 直接返回结果，不包装在 { result } 中
     console.log('Response:', JSON.stringify(result, null, 2));
     console.log('=== END USE ABILITY REQUEST ===\n');
-    
+
     res.json(result);
   } catch (error) {
     console.error('Use ability error:', error);
@@ -177,16 +192,16 @@ app.post('/api/player/last-words', async (req, res) => {
   try {
     console.log('\n=== LAST WORDS REQUEST ===');
     console.log('Request body:', JSON.stringify(req.body, null, 2));
-    
+
     const lastWords = await playerServer.lastWords();
-    
+
     // 刷新Langfuse数据
     await flushLangfuseData();
-    
+
     const response = LastWordsResponseSchema.parse({ content: lastWords });
     console.log('Response:', JSON.stringify(response, null, 2));
     console.log('=== END LAST WORDS REQUEST ===\n');
-    
+
     res.json(response);
   } catch (error) {
     console.error('Last words error:', error);
@@ -223,14 +238,14 @@ app.listen(port, host, () => {
 // 优雅关闭处理，确保 Langfuse 数据被正确刷新
 const gracefulShutdown = async (signal: string) => {
   console.log(`\n📊 收到 ${signal} 信号，正在关闭服务器并刷新 Langfuse 数据...`);
-  
+
   try {
     // 刷新 Langfuse 追踪数据
     await shutdownLangfuse();
   } catch (error) {
     console.error('❌ Langfuse 关闭时出错:', error);
   }
-  
+
   console.log('👋 服务器已关闭');
   process.exit(0);
 };

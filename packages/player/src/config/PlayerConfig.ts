@@ -177,7 +177,7 @@ export class ConfigLoader {
     if (!this.config.logging.enabled) return;
     
     console.log('\n🎯 Player配置信息:');
-    console.log(`  服务器: ${this.config.server.host}:${this.config.server.port}`);
+    // console.log(`  服务器: ${this.config.server.host}:${this.config.server.port}`);
     console.log(`  AI模型: ${this.config.ai.model} (${this.config.ai.provider})`);
     console.log(`  策略: ${this.config.game.strategy}`);
     console.log(`  日志: ${this.config.logging.enabled ? '启用' : '禁用'}\n`);

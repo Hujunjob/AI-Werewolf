@@ -60,26 +60,26 @@ echo "🤖 启动AI玩家（开发模式）..."
 
 # 定义玩家配置
 declare -a PLAYERS=(
-    "player1:玩家1:3001"
-    "player2:玩家2:3002" 
-    "player3:玩家3:3003"
-    "player4:玩家4:3004"
-    "player5:玩家5:3005"
-    "player6:玩家6:3006"
-    "player7:玩家7:3007"
-    "player8:玩家8:3008"
+    "default_free:玩家1:3001"
+    "default_free:玩家2:3002" 
+    "default_free:玩家3:3003"
+    "default_free:玩家4:3004"
+    "default_free:玩家5:3005"
+    "default_free:玩家6:3006"
+    "default_free:玩家7:3007"
+    "default_free:玩家8:3008"
 )
 
 # 启动每个玩家
 for player_info in "${PLAYERS[@]}"; do
     IFS=':' read -r config_name player_name port <<< "$player_info"
-    config_file="config/${config_name}.yaml"
-    log_file="$LOG_DIR/${config_name}-dev.log"
+    config_file="configs/${config_name}.json"
+    log_file="$LOG_DIR/${config_name}-${port}.log"
     
-    echo "   启动 $player_name (端口: $port)"
+    echo "   启动 $player_name (端口: $port) config:$config_file"
     
     cd packages/player
-    bun run dev --config="../../$config_file" > "../../$log_file" 2>&1 &
+    bun run dev --config="$config_file" --port="$port" > "$log_file" 2>&1 &
     pid=$!
     cd ../..
     
