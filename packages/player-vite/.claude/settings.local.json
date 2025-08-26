@@ -15,7 +15,8 @@
       "Read(//Volumes/Disk2/github/AI-Werewolf/**)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(bun install:*)"
     ],
     "additionalDirectories": [
       "/Volumes/Disk2/github/AI-Werewolf/packages/player/src/prompts",
