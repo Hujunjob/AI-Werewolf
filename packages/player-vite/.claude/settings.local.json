@@ -9,7 +9,8 @@
       "Bash(curl:*)",
       "Bash(kill:*)",
       "Read(//Volumes/Disk2/github/AI-Werewolf/**)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Read(//Volumes/Disk2/github/AI-Werewolf/**)"
     ],
     "additionalDirectories": [
       "/Volumes/Disk2/github/AI-Werewolf/packages/player/src/prompts",
