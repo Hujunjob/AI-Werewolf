@@ -38,18 +38,9 @@ export function getCunningPersonality(): string {
 - 在发言中体现性格特点（如模棱两可、误导性）`;
 }
 
-function getWittyPersonality(): string {
-  return `你的性格特点是：机智幽默、善于言辞
-- 发言时经常使用幽默或讽刺的语调
-- 善于用机智的话语来转移注意力
-- 在紧张局势中也能保持轻松的语气
-- 通过幽默来建立与其他玩家的联系
-- 在发言中体现性格特点（如风趣、机智）`;
-}
-
 // 工厂函数
 export function getPersonalityPrompt(
-  personalityType: 'aggressive' | 'conservative' | 'cunning' | 'witty'
+  personalityType: 'aggressive' | 'conservative' | 'cunning'
 ): string {
   switch (personalityType) {
     case 'aggressive':
@@ -58,8 +49,6 @@ export function getPersonalityPrompt(
       return getConservativePersonality();
     case 'cunning':
       return getCunningPersonality();
-    case 'witty':
-      return getWittyPersonality();
     default:
       throw new Error(`Unknown personality type: ${personalityType}`);
   }

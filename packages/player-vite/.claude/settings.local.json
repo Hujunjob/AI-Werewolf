@@ -2,13 +2,21 @@
   "permissions": {
     "allow": [
       "Bash(find:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(bun run:*)",
+      "Bash(lsof:*)",
+      "Bash(curl:*)",
+      "Bash(kill:*)",
+      "Read(//Volumes/Disk2/github/AI-Werewolf/**)",
+      "Bash(npx tsc:*)"
     ],
     "additionalDirectories": [
       "/Volumes/Disk2/github/AI-Werewolf/packages/player/src/prompts",
       "/Volumes/Disk2/github/AI-Werewolf/packages/player/src/config",
       "/Volumes/Disk2/github/AI-Werewolf/packages/player/src",
-      "/Volumes/Disk2/github/AI-Werewolf/packages/player/configs"
+      "/Volumes/Disk2/github/AI-Werewolf/packages/player/configs",
+      "/Volumes/Disk2/github/AI-Werewolf/shared/types"
     ]
   }
 }

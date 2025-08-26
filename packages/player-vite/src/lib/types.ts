@@ -15,7 +15,7 @@ export enum GamePhase {
 
 export type PlayerId = number;
 
-export type PersonalityType = 'aggressive' | 'conservative' | 'cunning' | 'witty';
+export type PersonalityType = 'aggressive' | 'conservative' | 'cunning';
 
 export interface StartGameParams {
   gameId: string;
@@ -39,7 +39,7 @@ export interface PlayerContext {
   playerId: PlayerId;
   round: number;
   currentPhase: GamePhase;
-  players: Player[];
+  alivePlayers: Player[];
   history: GameHistory[];
 }
 

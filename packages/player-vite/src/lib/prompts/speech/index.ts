@@ -1,5 +1,5 @@
 import type { PlayerContext, SeerContext, WitchContext } from '../../types';
-import { Role as RoleEnum } from '../../types';
+import { Role } from '../../types';
 import { formatPlayerList, formatSpeechHistory } from '../utils';
 import type { PlayerServer } from '../../PlayerServer';
 
@@ -41,12 +41,12 @@ export function getVillagerSpeech(playerServer: PlayerServer, context: PlayerCon
     playerId: playerId.toString(),
     playerName: `Player${playerId}`,
     role: 'villager',
-    speechHistory: context.players.flatMap(p => p.speeches || []),
+    speechHistory: context.alivePlayers.flatMap(p => p.speeches || []),
     customContent: personalityPrompt,
     suspiciousPlayers: [] as string[],
     logicalContradictions: ''
   };
-  const playerList = formatPlayerList(context.players.filter(p => p.isAlive));
+  const playerList = formatPlayerList(context.alivePlayers.filter(p => p.isAlive));
   const speechSummary = formatSpeechHistory(params.speechHistory);
   const suspiciousInfo = params.suspiciousPlayers?.join('、') || '暂无明确可疑目标';
   
@@ -81,13 +81,13 @@ export function getWerewolfSpeech(playerServer: PlayerServer, context: PlayerCon
     playerId: playerId.toString(),
     playerName: `Player${playerId}`,
     role: 'werewolf',
-    speechHistory: context.players.flatMap(p => p.speeches || []),
+    speechHistory: context.alivePlayers.flatMap(p => p.speeches || []),
     teammates: teammateIds?.map(id => id.toString()),
     customContent: personalityPrompt,
     suspiciousPlayers: [] as string[],
     killedLastNight: 'unknown'
   };
-  const playerList = formatPlayerList(context.players.filter(p => p.isAlive));
+  const playerList = formatPlayerList(context.alivePlayers.filter(p => p.isAlive));
   const speechSummary = formatSpeechHistory(params.speechHistory);
   const teammateList = params.teammates?.join('、') || '暂无队友信息';
   const killedInfo = params.killedLastNight || '无人被杀';
@@ -126,11 +126,11 @@ export function getSeerSpeech(playerServer: PlayerServer, context: SeerContext):
     playerId: playerId.toString(),
     playerName: `Player${playerId}`,
     role: 'seer',
-    speechHistory: context.players.flatMap(p => p.speeches || []),
+    speechHistory: context.alivePlayers.flatMap(p => p.speeches || []),
     customContent: personalityPrompt,
     suspiciousPlayers: [] as string[]
   };
-  const playerList = formatPlayerList(context.players.filter(p => p.isAlive));
+  const playerList = formatPlayerList(context.alivePlayers.filter(p => p.isAlive));
   const speechSummary = formatSpeechHistory(params.speechHistory);
   
   // 处理查验结果
@@ -176,11 +176,11 @@ export function getWitchSpeech(playerServer: PlayerServer, context: WitchContext
     playerId: playerId.toString(),
     playerName: `Player${playerId}`,
     role: 'witch',
-    speechHistory: context.players.flatMap(p => p.speeches || []),
+    speechHistory: context.alivePlayers.flatMap(p => p.speeches || []),
     customContent: personalityPrompt,
     suspiciousPlayers: [] as string[]
   };
-  const playerList = formatPlayerList(context.players.filter(p => p.isAlive));
+  const playerList = formatPlayerList(context.alivePlayers.filter(p => p.isAlive));
   const speechSummary = formatSpeechHistory(params.speechHistory);
   const potionInfo = `解药${context.witchHealUsed ? '已用' : '可用'}，毒药${context.witchPoisonUsed ? '已用' : '可用'}`;
   const killedInfo = context.nightDeaths && context.nightDeaths.length > 0 ? `${context.nightDeaths.join('、')}号` : '无人被杀';
@@ -218,13 +218,13 @@ export function getRoleSpeech(playerServer: PlayerServer, context: PlayerContext
   }
   
   switch (role) {
-    case RoleEnum.VILLAGER:
+    case Role.VILLAGER:
       return getVillagerSpeech(playerServer, context as PlayerContext);
-    case RoleEnum.WEREWOLF:
+    case Role.WEREWOLF:
       return getWerewolfSpeech(playerServer, context as PlayerContext);
-    case RoleEnum.SEER:
+    case Role.SEER:
       return getSeerSpeech(playerServer, context as SeerContext);
-    case RoleEnum.WITCH:
+    case Role.WITCH:
       return getWitchSpeech(playerServer, context as WitchContext);
     default:
       throw new Error(`Unknown role: ${role}`);

@@ -270,6 +270,8 @@ export class PlayerServer {
   }
 
   private buildAbilityPrompt(context: PlayerContext | WitchContext | SeerContext): string {
+    console.log("buildAbilityPrompt:",context);
+    
     const nightPrompt = WerewolfPrompts.getNightAction(this, context);
     
     return nightPrompt;

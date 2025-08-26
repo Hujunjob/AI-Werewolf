@@ -202,6 +202,8 @@ export class PlayerServer {
     }
     
     const schema = ROLE_SCHEMA_MAP[this.role!];
+    console.log("generateAbilityUse:",schema);
+    
     if (!schema) {
       throw new Error(`Unknown role: ${this.role}`);
     }

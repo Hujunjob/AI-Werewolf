@@ -20,7 +20,7 @@ export * from './special';
 export class WerewolfPrompts {
   // Personality prompts
   static getPersonality(
-    personalityType: 'aggressive' | 'conservative' | 'cunning' | 'witty'
+    personalityType: 'aggressive' | 'conservative' | 'cunning'
   ): string {
     const { getPersonalityPrompt } = require('./personality');
     return getPersonalityPrompt(personalityType);

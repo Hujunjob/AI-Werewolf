@@ -1,10 +1,10 @@
 import type { PlayerContext, SeerContext, WitchContext } from '../../types';
-import { Role as RoleEnum } from '../../types';
+import { Role } from '../../types';
 import { formatPlayerList, formatHistoryEvents } from '../utils';
 import type { PlayerServer } from '../../PlayerServer';
 
 export function getWerewolfNightAction(playerServer: PlayerServer, context: PlayerContext): string {
-  const playerList = formatPlayerList(context.players.filter(p => p.isAlive));
+  const playerList = formatPlayerList(context.alivePlayers.filter(p => p.isAlive));
   const historyEvents = formatHistoryEvents(['夜间行动阶段']);
   const teammates = playerServer.getTeammates()?.join('、') || '暂无队友信息';
   
@@ -41,7 +41,7 @@ ${gameProgressInfo}
 }
 
 export function getSeerNightAction(playerServer: PlayerServer, context: SeerContext): string {
-  const playerList = formatPlayerList(context.players.filter(p => p.isAlive));
+  const playerList = formatPlayerList(context.alivePlayers.filter(p => p.isAlive));
   const historyEvents = formatHistoryEvents(['夜间行动阶段']);
   const checkInfo = context.investigatedPlayers ? Object.values(context.investigatedPlayers)
     .map((investigation) => {
@@ -83,7 +83,7 @@ ${gameProgressInfo}
 }
 
 export function getWitchNightAction(playerServer: PlayerServer, context: WitchContext): string {
-  const playerList = formatPlayerList(context.players.filter(p => p.isAlive));
+  const playerList = formatPlayerList(context.alivePlayers.filter(p => p.isAlive));
   const historyEvents = formatHistoryEvents(['夜间行动阶段']);
   const potionInfo = `解药${context.witchHealUsed ? '已用' : '可用'}，毒药${context.witchPoisonUsed ? '已用' : '可用'}`;
   
@@ -121,18 +121,9 @@ ${potionInfo}
 }
 
 export function getGuardNightAction(playerServer: PlayerServer, context: PlayerContext): string {
-  const playerId = playerServer.getPlayerId();
-  const params = {
-    playerId,
-    role: playerServer.getRole(),
-    currentRound: context.round,
-    alivePlayers: context.players.filter(p => p.isAlive),
-    historyEvents: [],
-    guardHistory: [] as string[]
-  };
-  const playerList = formatPlayerList(params.alivePlayers);
-  const historyEvents = formatHistoryEvents(params.historyEvents);
-  const guardInfo = params.guardHistory?.join('，') || '第1夜守护玩家A，第2夜守护玩家B';
+  const playerList = formatPlayerList(context.alivePlayers.filter(p => p.isAlive));
+  const historyEvents = formatHistoryEvents([]);
+  const guardInfo = '第1夜守护玩家A，第2夜守护玩家B';
   
   return `你是${playerServer.getPlayerId()}号玩家，狼人杀游戏中的守卫角色。当前游戏状态：
 - 存活玩家: [${playerList}]
@@ -152,18 +143,9 @@ export function getGuardNightAction(playerServer: PlayerServer, context: PlayerC
 }
 
 export function getHunterDeathAction(playerServer: PlayerServer, context: PlayerContext, killedBy: 'werewolf' | 'vote' | 'poison'): string {
-  const playerId = playerServer.getPlayerId();
-  const params = {
-    playerId,
-    role: playerServer.getRole(),
-    currentRound: context.round,
-    alivePlayers: context.players.filter(p => p.isAlive),
-    historyEvents: [],
-    killedBy
-  };
-  const playerList = formatPlayerList(params.alivePlayers);
-  const killedByInfo = params.killedBy === 'werewolf' ? '狼人击杀' : 
-                      params.killedBy === 'vote' ? '投票放逐' : '女巫毒杀';
+  const playerList = formatPlayerList(context.alivePlayers.filter(p => p.isAlive));
+  const killedByInfo = killedBy === 'werewolf' ? '狼人击杀' : 
+                      killedBy === 'vote' ? '投票放逐' : '女巫毒杀';
   
   return `你是${playerServer.getPlayerId()}号玩家，狼人杀游戏中的猎人角色。当前游戏状态：
 - 存活玩家: [${playerList}]
@@ -192,15 +174,15 @@ export function getRoleNightAction(playerServer: PlayerServer, context: PlayerCo
   }
   
   switch (role) {
-    case RoleEnum.VILLAGER:
+    case Role.VILLAGER:
       throw new Error('Villager has no night action, should be skipped');
-    case RoleEnum.WEREWOLF: {
+    case Role.WEREWOLF: {
       return getWerewolfNightAction(playerServer, context as PlayerContext);
     }
-    case RoleEnum.SEER: {
+    case Role.SEER: {
       return getSeerNightAction(playerServer, context as SeerContext);
     }
-    case RoleEnum.WITCH: {
+    case Role.WITCH: {
       return getWitchNightAction(playerServer, context as WitchContext);
     }
     default:

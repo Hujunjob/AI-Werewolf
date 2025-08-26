@@ -1,5 +1,5 @@
 import type { PlayerContext, SeerContext, WitchContext } from '../../types';
-import { Role as RoleEnum } from '../../types';
+import { Role } from '../../types';
 import type { PlayerServer } from '../../PlayerServer';
 
 function formatPlayerList(players: any[]): string {
@@ -34,11 +34,11 @@ export function getVillagerVoting(playerServer: PlayerServer, context: PlayerCon
   const playerId = playerServer.getPlayerId();
   const params = {
     playerId: playerId?.toString() || '0',
-    role: playerServer.getRole() || RoleEnum.VILLAGER,
-    alivePlayers: context.players.filter(p => p.isAlive),
-    speechSummary: context.players.flatMap(p => p.speeches || []),
+    role: playerServer.getRole() || Role.VILLAGER,
+    alivePlayers: context.alivePlayers.filter(p => p.isAlive),
+    speechSummary: context.alivePlayers.flatMap(p => p.speeches || []),
     currentVotes: [] as any[],
-    allVotes: context.players.flatMap(p => p.votedBy || []),
+    allVotes: context.alivePlayers.flatMap(p => p.votedBy || []),
     currentRound: context.round
   };
   const playerList = formatPlayerList(params.alivePlayers);
@@ -69,11 +69,11 @@ export function getWerewolfVoting(playerServer: PlayerServer, context: PlayerCon
   const teammateIds = playerServer.getTeammates();
   const params = {
     playerId: playerId?.toString() || '0',
-    role: playerServer.getRole() || RoleEnum.WEREWOLF,
-    alivePlayers: context.players.filter(p => p.isAlive),
-    speechSummary: context.players.flatMap(p => p.speeches || []),
+    role: playerServer.getRole() || Role.WEREWOLF,
+    alivePlayers: context.alivePlayers.filter(p => p.isAlive),
+    speechSummary: context.alivePlayers.flatMap(p => p.speeches || []),
     currentVotes: [] as any[],
-    allVotes: context.players.flatMap(p => p.votedBy || []),
+    allVotes: context.alivePlayers.flatMap(p => p.votedBy || []),
     currentRound: context.round,
     teammates: teammateIds?.map(id => id.toString())
   };
@@ -107,11 +107,11 @@ export function getSeerVoting(playerServer: PlayerServer, context: SeerContext):
   const playerId = playerServer.getPlayerId();
   const params = {
     playerId: playerId?.toString() || '0',
-    role: playerServer.getRole() || RoleEnum.SEER,
-    alivePlayers: context.players.filter(p => p.isAlive),
-    speechSummary: context.players.flatMap(p => p.speeches || []),
+    role: playerServer.getRole() || Role.SEER,
+    alivePlayers: context.alivePlayers.filter(p => p.isAlive),
+    speechSummary: context.alivePlayers.flatMap(p => p.speeches || []),
     currentVotes: [] as any[],
-    allVotes: context.players.flatMap(p => p.votedBy || []),
+    allVotes: context.alivePlayers.flatMap(p => p.votedBy || []),
     currentRound: context.round,
     checkResults: context.investigatedPlayers ? Object.fromEntries(
       Object.entries(context.investigatedPlayers).map(([round, data]) => [
@@ -154,11 +154,11 @@ export function getWitchVoting(playerServer: PlayerServer, context: WitchContext
   const playerId = playerServer.getPlayerId();
   const params = {
     playerId: playerId?.toString() || '0',
-    role: playerServer.getRole() || RoleEnum.WITCH,
-    alivePlayers: context.players.filter(p => p.isAlive),
-    speechSummary: context.players.flatMap(p => p.speeches || []),
+    role: playerServer.getRole() || Role.WITCH,
+    alivePlayers: context.alivePlayers.filter(p => p.isAlive),
+    speechSummary: context.alivePlayers.flatMap(p => p.speeches || []),
     currentVotes: [] as any[],
-    allVotes: context.players.flatMap(p => p.votedBy || []),
+    allVotes: context.alivePlayers.flatMap(p => p.votedBy || []),
     currentRound: context.round,
     potionUsed: { heal: context.witchHealUsed, poison: context.witchPoisonUsed }
   };
@@ -194,11 +194,11 @@ export function getGuardVoting(playerServer: PlayerServer, context: PlayerContex
   const playerId = playerServer.getPlayerId();
   const params = {
     playerId: playerId?.toString() || '0',
-    role: playerServer.getRole() || RoleEnum.VILLAGER,
-    alivePlayers: context.players.filter(p => p.isAlive),
-    speechSummary: context.players.flatMap(p => p.speeches || []),
+    role: playerServer.getRole() || Role.VILLAGER,
+    alivePlayers: context.alivePlayers.filter(p => p.isAlive),
+    speechSummary: context.alivePlayers.flatMap(p => p.speeches || []),
     currentVotes: [] as any[],
-    allVotes: context.players.flatMap(p => p.votedBy || []),
+    allVotes: context.alivePlayers.flatMap(p => p.votedBy || []),
     currentRound: context.round,
     guardHistory: [] as string[]
   };
@@ -232,11 +232,11 @@ export function getHunterVoting(playerServer: PlayerServer, context: PlayerConte
   const playerId = playerServer.getPlayerId();
   const params = {
     playerId: playerId?.toString() || '0',
-    role: playerServer.getRole() || RoleEnum.VILLAGER,
-    alivePlayers: context.players.filter(p => p.isAlive),
-    speechSummary: context.players.flatMap(p => p.speeches || []),
+    role: playerServer.getRole() || Role.VILLAGER,
+    alivePlayers: context.alivePlayers.filter(p => p.isAlive),
+    speechSummary: context.alivePlayers.flatMap(p => p.speeches || []),
     currentVotes: [] as any[],
-    allVotes: context.players.flatMap(p => p.votedBy || []),
+    allVotes: context.alivePlayers.flatMap(p => p.votedBy || []),
     currentRound: context.round
   };
   const playerList = formatPlayerList(params.alivePlayers);
@@ -272,13 +272,13 @@ export function getRoleVoting(playerServer: PlayerServer, context: PlayerContext
   }
   
   switch (role) {
-    case RoleEnum.VILLAGER:
+    case Role.VILLAGER:
       return getVillagerVoting(playerServer, context as PlayerContext);
-    case RoleEnum.WEREWOLF:
+    case Role.WEREWOLF:
       return getWerewolfVoting(playerServer, context as PlayerContext);
-    case RoleEnum.SEER:
+    case Role.SEER:
       return getSeerVoting(playerServer, context as SeerContext);
-    case RoleEnum.WITCH:
+    case Role.WITCH:
       return getWitchVoting(playerServer, context as WitchContext);
     default:
       throw new Error(`Unknown role: ${role}`);
