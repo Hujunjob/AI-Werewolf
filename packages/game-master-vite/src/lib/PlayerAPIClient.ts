@@ -38,7 +38,7 @@ export class PlayerAPIClient {
         });
         
         if (response.ok) {
-          // start-game 没有响应体
+          // start-game 没有响应体?
           if (endpoint === 'start-game') {
             return;
           }
