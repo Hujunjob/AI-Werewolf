@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 4001",
+    "dev0": "next dev -p 4001",
     "dev1": "next dev -p 4002",
     "dev2": "next dev -p 4003",
     "dev3": "next dev -p 4004",
@@ -15,8 +15,6 @@
   "dependencies": {
     "@ai-sdk/openai": "*",
     "@ai-sdk/openai-compatible": "^1.0.2",
-    "@ai-werewolf/lib": "workspace:*",
-    "@ai-werewolf/types": "workspace:*",
     "@openrouter/ai-sdk-provider": "^0.7.3",
     "@vercel/node": "^5.3.13",
     "ai": "*",
