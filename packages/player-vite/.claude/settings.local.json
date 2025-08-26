@@ -12,7 +12,10 @@
       "Bash(npx tsc:*)",
       "Read(//Volumes/Disk2/github/AI-Werewolf/**)",
       "Read(//Volumes/Disk2/github/AI-Werewolf/**)",
-      "Read(//Volumes/Disk2/github/AI-Werewolf/**)"
+      "Read(//Volumes/Disk2/github/AI-Werewolf/**)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "additionalDirectories": [
       "/Volumes/Disk2/github/AI-Werewolf/packages/player/src/prompts",
