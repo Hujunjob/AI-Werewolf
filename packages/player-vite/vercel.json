@@ -6,5 +6,5 @@
     "src/pages/api/**/*.ts": {
       "runtime": "@vercel/node"
     }
-  },
+  }
 }
