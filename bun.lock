@@ -112,8 +112,10 @@
       "name": "@ai-werewolf/player-vite",
       "version": "1.0.0",
       "dependencies": {
+        "@ai-sdk/openai-compatible": "^1.0.0",
         "@ai-werewolf/lib": "workspace:*",
         "@ai-werewolf/types": "workspace:*",
+        "ai": "^3.4.0",
         "axios": "^1.6.0",
         "clsx": "^2.0.0",
         "lucide-react": "^0.400.0",

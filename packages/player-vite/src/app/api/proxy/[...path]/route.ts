@@ -83,7 +83,8 @@ async function handleProxyRequest(
     
     if (axios.isAxiosError(error)) {
       if (error.code === 'ECONNREFUSED') {
-        errorMessage = `Target server on port ${searchParams.get('port')} is not running`;
+        const { searchParams: urlSearchParams } = new URL(request.url);
+        errorMessage = `Target server on port ${urlSearchParams.get('port')} is not running`;
         status = 503;
       } else if (error.response) {
         return new NextResponse(JSON.stringify(error.response.data), {
