@@ -4,7 +4,7 @@
   "installCommand": "echo '{\"name\":\"temp\"}' > ../../../package.json.bak && mv ../../../package.json ../../../package.json.orig && mv ../../../package.json.bak ../../../package.json && bun install && mv ../../../package.json.orig ../../../package.json",
   "functions": {
     "src/pages/api/**/*.ts": {
-      "runtime": "@vercel/node"
+      "runtime": "nodejs20.x"
     }
   }
 }
