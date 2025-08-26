@@ -1,10 +1,5 @@
 {
   "buildCommand": "bun run build",
   "outputDirectory": ".next",
-  "installCommand": "echo '{\"name\":\"temp\"}' > ../../../package.json.bak && mv ../../../package.json ../../../package.json.orig && mv ../../../package.json.bak ../../../package.json && bun install && mv ../../../package.json.orig ../../../package.json",
-  "functions": {
-    "src/pages/api/**/*.ts": {
-      "runtime": "nodejs20.x"
-    }
-  }
+  "installCommand": "echo '{\"name\":\"temp\"}' > ../../../package.json.bak && mv ../../../package.json ../../../package.json.orig && mv ../../../package.json.bak ../../../package.json && bun install && mv ../../../package.json.orig ../../../package.json"
 }
