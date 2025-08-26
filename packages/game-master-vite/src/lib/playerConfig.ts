@@ -5,14 +5,14 @@ export function getPlayerUrls(): string[] {
   // In production, these could come from environment variables
   // For now, we'll use the default localhost URLs
   const defaultPlayers = [
-    'https://ai-werewolf-game-master-vite.vercel.app:3001',
-    'https://ai-werewolf-game-master-vite.vercel.app:3002',
-    'https://ai-werewolf-game-master-vite.vercel.app:3003',
-    'https://ai-werewolf-game-master-vite.vercel.app:3004',
-    'https://ai-werewolf-game-master-vite.vercel.app:3005',
-    'https://ai-werewolf-game-master-vite.vercel.app:3006',
-    'https://ai-werewolf-game-master-vite.vercel.app:3007',
-    'https://ai-werewolf-game-master-vite.vercel.app:3008'
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'http://localhost:3003',
+    'http://localhost:3004',
+    'http://localhost:3005',
+    'http://localhost:3006',
+    'http://localhost:3007',
+    'http://localhost:3008'
   ];
 
   // Check if there's a custom configuration in environment variables
