@@ -1,0 +1,21 @@
+{
+  "functions": {
+    "src/pages/api/**/*.ts": {
+      "runtime": "@vercel/node"
+    }
+  },
+  "env": {
+    "OPENROUTER_API_KEY": "@openrouter_api_key",
+    "LANGFUSE_SECRET_KEY": "@langfuse_secret_key",
+    "LANGFUSE_PUBLIC_KEY": "@langfuse_public_key", 
+    "LANGFUSE_BASEURL": "@langfuse_baseurl"
+  },
+  "build": {
+    "env": {
+      "OPENROUTER_API_KEY": "@openrouter_api_key",
+      "LANGFUSE_SECRET_KEY": "@langfuse_secret_key",
+      "LANGFUSE_PUBLIC_KEY": "@langfuse_public_key",
+      "LANGFUSE_BASEURL": "@langfuse_baseurl"
+    }
+  }
+}

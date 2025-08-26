@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(grep:*)"
+    ],
+    "additionalDirectories": [
+      "/Volumes/Disk2/github/AI-Werewolf/packages/player/src/prompts",
+      "/Volumes/Disk2/github/AI-Werewolf/packages/player/src/config",
+      "/Volumes/Disk2/github/AI-Werewolf/packages/player/src",
+      "/Volumes/Disk2/github/AI-Werewolf/packages/player/configs"
+    ]
+  }
+}
