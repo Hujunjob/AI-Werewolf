@@ -215,6 +215,7 @@ export class PlayerServer {
     if (this.role === Role.VILLAGER) {
       throw new Error('Village has no night action, should be skipped');
     }
+
     
     const schema = ROLE_SCHEMA_MAP[this.role!];
     if (!schema) {
@@ -222,7 +223,7 @@ export class PlayerServer {
     }
 
     const prompt = this.buildAbilityPrompt(context);
-    
+    console.log("generateAbilityUse:",this.role,schema,prompt);    
     return this.generateWithLangfuse<NightActionResponseType>({
       functionId: 'ability-generation',
       schema: schema,
