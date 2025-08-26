@@ -81,10 +81,8 @@ export class ConfigLoader {
     } else if (configPath.endsWith('.yaml') || configPath.endsWith('.yml')) {
       return yaml.load(configContent) as Partial<PlayerConfig>;
     } else if (configPath.endsWith('.js') || configPath.endsWith('.ts')) {
-      // 对于JS/TS文件，我们需要动态导入
-      delete require.cache[require.resolve(absolutePath)];
-      const configModule = require(absolutePath);
-      return configModule.default || configModule;
+      // 对于JS/TS文件，在Vercel环境中不支持动态导入
+      throw new Error('在Vercel环境中不支持.js/.ts配置文件，请使用.json或.yaml文件');
     } else {
       throw new Error('不支持的配置文件格式，请使用 .json、.yaml、.yml、.js 或 .ts 文件');
     }
