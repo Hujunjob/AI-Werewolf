@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun:*)",
+      "Bash(npx next:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
