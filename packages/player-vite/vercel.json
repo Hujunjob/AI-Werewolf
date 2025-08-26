@@ -1,7 +1,6 @@
 {
-  "buildCommand": "cd packages/player-vite && bun run build",
-  "outputDirectory": "packages/player-vite/.next",
-  "installCommand": "bun install",
+  "buildCommand": "bun run build",
+  "installCommand": "bun install --ignore-workspace",
   "functions": {
     "src/pages/api/**/*.ts": {
       "runtime": "@vercel/node"
