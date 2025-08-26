@@ -169,7 +169,7 @@ export default function Home() {
                     <option value="openrouter/openai/gpt-4">GPT-4</option>
                     <option value="openrouter/openai/gpt-3.5-turbo">GPT-3.5 Turbo</option>
                     <option value="deepseek/deepseek-r1-0528-qwen3-8b:free">DeepSeek R1 (Free)</option>
-                    <option value="custom">自定义模型...</option>
+                    <option value="custom">自定义模型...</option> 
                   </select>
                   {config.ai.model === 'custom' && (
                     <input
