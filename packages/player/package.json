@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "start:config": "node dist/index.js --config=",
+    "start": "bun dist/index.js",
+    "start:config": "bun dist/index.js --config=",
     "dev": "bun --watch src/index.ts",
     "dev:config": "bun --watch src/index.ts --config=",
     "dev:default": "bun --watch src/index.ts --config=configs/default.json",
